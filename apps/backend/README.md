@@ -9,7 +9,6 @@ A NestJS microservices architecture with API Gateway and Worker service, communi
 - **Entry Point**: `src/main.gateway.ts`
 - **Port**: `3000` (configurable via `API_PORT`)
 - **Purpose**: HTTP-facing service that handles frontend requests
-- **Technology**: NestJS HTTP server with REST API
 - **Communication**: Forwards requests to Worker via Redis
 
 ### ⚙️ Worker Service (Background Microservice)
@@ -17,7 +16,6 @@ A NestJS microservices architecture with API Gateway and Worker service, communi
 - **Entry Point**: `src/main.worker.ts`
 - **Port**: None (Redis transport only)
 - **Purpose**: Handles business logic, database operations, and background tasks
-- **Technology**: NestJS microservice with Redis transport
 - **Communication**: Listens to Redis message patterns
 
 ### 🔗 Redis
@@ -228,22 +226,6 @@ The API Gateway exposes the following REST endpoints:
 - `PUT /api/links/:id` - Update a link
 - `DELETE /api/links/:id` - Delete a link
 
-**Example Request:**
-
-```bash
-# Create a link
-curl -X POST http://localhost:3000/api/links \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://example.com",
-    "title": "Example Site",
-    "description": "An example website"
-  }'
-
-# Get all links
-curl http://localhost:3000/api/links
-```
-
 ## How It Works
 
 ### Request Flow
@@ -267,37 +249,14 @@ The services communicate using these Redis message patterns:
 - `links.update` - Update a link
 - `links.remove` - Delete a link
 
-## Troubleshooting
-
-### Cannot connect to database
-
-- Ensure PostgreSQL is running: `psql -l`
-- Check `DATABASE_*` credentials in `.env`
-- Verify database exists: `createdb app`
-
-### Cannot connect to Redis
-
-- Ensure Redis is running: `redis-cli ping` should return `PONG`
-- Check `REDIS_*` credentials in `.env`
-- If using Docker, ensure container is running
-
-### Gateway can't reach Worker
-
-- Make sure **both services are running**
-- Check that both use the same Redis connection settings
-- Verify Redis is accessible from both services
-
-### Migration errors
-
-- Build the project first: `pnpm build`
-- Check entities have proper MikroORM decorators
-- Review migration files in `src/migrations/`
-
 ## Docker Setup (Optional)
 
 If you don't have PostgreSQL or Redis locally:
 
 ```bash
+docker-compose up -d
+
+# Or individual commands:
 # Start PostgreSQL
 docker run -d \
   --name app-postgres \
@@ -312,8 +271,6 @@ docker run -d \
   -p 6379:6379 \
   redis:7-alpine
 
-# Or use docker-compose (create docker-compose.yml):
-docker-compose up -d
 ```
 
 ## Project Structure
@@ -331,39 +288,4 @@ src/
 │   ├── links.worker.controller.ts   # Message handlers (Worker)
 │   └── links.service.ts             # Business logic + DB operations
 └── migrations/                  # Database migrations
-```
-
-## Important Notes
-
-- **Always run both services** for the system to work properly
-- The **Worker must be running** for the Gateway to process requests
-- **Redis is required** - it's the communication backbone
-- Build `packages/*` first if you need to build or test the app
-
-```bash
-pnpm test:e2e
-```
-
-### Important Note 🚧
-
-If you plan to `build` or `test` the app, please make sure to build the `packages/*` first.
-
-### Docker Setup (Optional)
-
-If you don't have PostgreSQL or Redis installed locally, you can use Docker:
-
-```bash
-# Start PostgreSQL
-docker run -d \
-  --name app-postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=app \
-  -p 5432:5432 \
-  postgres:16-alpine
-
-# Start Redis
-docker run -d \
-  --name app-redis \
-  -p 6379:6379 \
-  redis:7-alpine
 ```
