@@ -1,6 +1,16 @@
 # App | Backend API
 
-A NestJS microservices architecture with API Gateway and Worker service, communicating via Redis transport and using PostgreSQL with MikroORM.
+A bolierplate for a Full-Stack JavaScript Web App.
+
+## The Stack
+
+- NestJS
+- MikroORM
+- PostgreSQL
+- Redis
+- NextJS
+- Docker
+- pnpm
 
 ## Getting Started
 
@@ -48,7 +58,7 @@ pnpm migration:up
 pnpm dev
 ```
 
-For more details, see documents.
+For more details, see documents below:
 
 - [ARCHITECTURE.md](./docs/ARCHITECTURE.md)
 - [COMMANDS.md](./docs/COMMANDS.md)
