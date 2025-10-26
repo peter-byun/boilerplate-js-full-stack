@@ -24,6 +24,21 @@
     },
     "lint": {},
     "test": {},
-    "test:e2e": {}
+    "test:e2e": {},
+    "migration:create": {
+      "cache": false
+    },
+    "migration:up": {
+      "cache": false
+    },
+    "migration:down": {
+      "cache": false
+    },
+    "migration:list": {
+      "cache": false
+    },
+    "migration:pending": {
+      "cache": false
+    }
   }
 }

@@ -7,7 +7,7 @@ A NestJS microservices architecture with API Gateway and Worker service, communi
 ### 🌐 API Gateway (HTTP Service)
 
 - **Entry Point**: `src/main.gateway.ts`
-- **Port**: `3000` (configurable via `API_PORT`)
+- **Port**: `3001` (configurable via `API_PORT`)
 - **Purpose**: HTTP-facing service that handles frontend requests
 - **Communication**: Forwards requests to Worker via Redis
 
@@ -28,8 +28,8 @@ A NestJS microservices architecture with API Gateway and Worker service, communi
 
 | Component         | Command                      | Port         | Description           |
 | ----------------- | ---------------------------- | ------------ | --------------------- |
-| **Both Services** | `pnpm dev`                   | 3000 + Redis | Run full system       |
-| **API Gateway**   | `pnpm dev:gateway`           | 3000         | HTTP endpoints only   |
+| **Both Services** | `pnpm dev`                   | 3001 + Redis | Run full system       |
+| **API Gateway**   | `pnpm dev:gateway`           | 3001         | HTTP endpoints only   |
 | **Worker**        | `pnpm dev:worker`            | Redis        | Background processing |
 | **PostgreSQL**    | `docker-compose up postgres` | 5432         | Database              |
 | **Redis**         | `docker-compose up redis`    | 6379         | Message broker        |
@@ -134,7 +134,7 @@ pnpm dev:worker
 
 The services will be available at:
 
-- 🌐 **API Gateway**: `http://localhost:3000/api`
+- 🌐 **API Gateway**: `http://localhost:3001/api`
 - ⚙️ **Worker Service**: Redis transport (no HTTP endpoint)
 
 ## Environment Variables
@@ -144,7 +144,7 @@ Create a `.env` file in the `apps/backend` directory:
 ### API Gateway Configuration
 
 ```env
-API_PORT=3000           # HTTP port for the API Gateway
+API_PORT=3001           # HTTP port for the API Gateway
 ```
 
 ### Database Configuration (PostgreSQL)
@@ -230,7 +230,7 @@ The API Gateway exposes the following REST endpoints:
 
 ### Request Flow
 
-1. **Frontend** sends HTTP request to **API Gateway** (`http://localhost:3000/api/links`)
+1. **Frontend** sends HTTP request to **API Gateway** (`http://localhost:3001/api/links`)
 2. **API Gateway** receives request in `LinksGatewayController`
 3. **Gateway** sends message to **Worker** via Redis using `ClientProxy.send('links.findAll', {})`
 4. **Redis** delivers message to **Worker Service**

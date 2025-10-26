@@ -29,7 +29,7 @@ apps/backend/
 ```
 Frontend Request
     ↓
-API Gateway (HTTP :3000)
+API Gateway (HTTP :3001)
     ↓ (ClientProxy.send)
 Redis Message Bus (:6379)
     ↓ (@MessagePattern)
@@ -42,54 +42,23 @@ Response flows back same path
 
 ## 🚀 Running the System
 
-### Start Everything (Recommended)
-
-```bash
-# Start infrastructure
-docker-compose up -d
-
-# Start both services
-pnpm dev
-```
-
-### Individual Services
-
-```bash
-pnpm dev:gateway    # Only HTTP API
-pnpm dev:worker     # Only background worker
-```
+1. Run `docker-compose up -d` to start PostgreSQL and Redis
+2. Copy `.env.example` to `.env`
+3. Run `pnpm migration:create` and `pnpm migration:up`
+4. Start services with `pnpm dev`
 
 ## 🔌 Environment Variables
 
 Added to `.env.example` and `turbo.json`:
 
-- `API_PORT=3000` - HTTP port for API Gateway
+- `API_PORT=3001` - HTTP port for API Gateway
 - `DATABASE_*` - PostgreSQL connection
 - `REDIS_*` - Redis connection
 - `NODE_ENV` - Environment mode
 
-## 📝 Key Features
-
-1. **Separation of Concerns**
-   - Gateway: HTTP handling only
-   - Worker: Business logic + database only
-
-2. **Scalability**
-   - Can run multiple worker instances
-   - Gateway and worker scale independently
-
-3. **Resilience**
-   - Redis retry logic (5 attempts, 1s delay)
-   - Services can restart independently
-
-4. **Developer Experience**
-   - Single `pnpm dev` starts everything
-   - Individual service debugging available
-   - docker-compose for easy setup
-
 ## 📡 API Endpoints
 
-Base URL: `http://localhost:3000/api`
+Base URL: `http://localhost:3001/api`
 
 - `GET /links` - Get all links
 - `GET /links/:id` - Get one link
@@ -118,19 +87,3 @@ pnpm start            # Production mode
 pnpm test             # Run tests
 pnpm migration:*      # Database migrations
 ```
-
-## ✨ Next Steps
-
-1. ✅ Infrastructure ready (PostgreSQL + Redis)
-2. ✅ Copy `.env.example` to `.env`
-3. ✅ Run `pnpm migration:create` and `pnpm migration:up`
-4. ✅ Start services with `pnpm dev`
-5. 🎯 Test API at `http://localhost:3000/api/links`
-
-## 🎉 Benefits Achieved
-
-- **Microservices**: Proper separation with Gateway + Worker
-- **Scalability**: Services can scale independently
-- **Maintainability**: Clear separation of concerns
-- **Flexibility**: Can add more workers for different domains
-- **Resilience**: Services can fail and recover independently

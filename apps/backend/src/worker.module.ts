@@ -5,6 +5,7 @@ import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { LinksService } from './links/links.service';
 import { Link } from './entities/link.entity';
 import { LinksWorkerController } from './links/links.worker.controller';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -21,12 +22,12 @@ import { LinksWorkerController } from './links/links.worker.controller';
         user: configService.get<string>('DATABASE_USER', 'postgres'),
         password: configService.get<string>('DATABASE_PASSWORD', 'postgres'),
         dbName: configService.get<string>('DATABASE_NAME', 'app'),
-        entities: ['./dist/entities'],
-        entitiesTs: ['./src/entities'],
+        entities: [join(__dirname, './entities/**/*.entity.js')],
+        entitiesTs: [join(__dirname, './entities/**/*.entity.ts')],
         debug: configService.get<string>('NODE_ENV') !== 'production',
         migrations: {
-          path: './dist/migrations',
-          pathTs: './src/migrations',
+          path: join(__dirname, './migrations'),
+          pathTs: join(__dirname, './migrations'),
         },
       }),
     }),

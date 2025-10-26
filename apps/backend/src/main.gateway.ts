@@ -28,7 +28,7 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
 
-  const port = configService.get<number>('API_PORT', 3000);
+  const port = configService.get<number>('API_PORT', 3001);
   await app.listen(port);
 
   console.log(`🌐 API Gateway is running on http://localhost:${port}/api`);

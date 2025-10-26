@@ -11,7 +11,12 @@
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "migration:create": "turbo run migration:create",
+    "migration:up": "turbo run migration:up",
+    "migration:down": "turbo run migration:down",
+    "migration:list": "turbo run migration:list",
+    "migration:pending": "turbo run migration:pending"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
